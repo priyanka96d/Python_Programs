@@ -1,0 +1,37 @@
+"""
+File: chatclient.py
+Client for a chat room.
+"""
+
+from socket import *
+from codecs import decode
+import tkinter as tk
+from tkinter import *
+import tkinter.ttk as tkk
+
+
+    
+HOST = "localhost"
+PORT = 5000
+BUFSIZE = 1024
+ADDRESS = (HOST, PORT)
+CODE = "ascii"
+
+server = socket(AF_INET, SOCK_STREAM)
+server.connect(ADDRESS)
+
+print(decode(server.recv(BUFSIZE), CODE))       # The server's greeting
+while True:
+    message = input("> ")# Get my reply or quit
+    #data()
+    #message=str(label.get())
+   
+    if not message:
+        break
+    server.send(bytes(message, CODE))           # Send my reply to the server
+    reply = decode(server.recv(BUFSIZE), CODE)  # Get the server's reply
+    if not reply:
+        print("Server disconnected")
+        break
+    print(reply)                                # Display the server's reply
+server.close()
